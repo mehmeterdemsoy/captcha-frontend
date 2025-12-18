@@ -1,0 +1,13 @@
+<h2>Webcam CAPTCHA</h2>
+
+<button (click)="startCamera()" [disabled]="streaming">Start camera</button>
+<button (click)="stopCamera()" [disabled]="!streaming">Stop camera</button>
+<button (click)="capture()" [disabled]="!streaming">Verify</button>
+
+<br /><br />
+
+<video #video width="400" autoplay muted playsinline></video>
+
+<canvas #canvas style="display: none;"></canvas>
+
+<p>{{ status }}</p>

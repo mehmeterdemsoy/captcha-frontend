@@ -1,0 +1,16 @@
+.grid {
+  display: flex;
+  gap: 20px;
+}
+
+.thumb {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 3px solid #ccc;
+  cursor: pointer;
+}
+
+.thumb:hover {
+  border-color: #66aaff;
+}

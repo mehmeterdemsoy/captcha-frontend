@@ -1,0 +1,14 @@
+<h2>Classic Image Puzzle CAPTCHA</h2>
+
+<p>{{ instruction }}</p>
+
+<div class="grid">
+  <img
+    *ngFor="let img of shuffled"
+    [src]="img.src"
+    (click)="select(img)"
+    class="thumb"
+  />
+</div>
+
+<p>{{ message }}</p>
