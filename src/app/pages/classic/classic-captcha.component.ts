@@ -1,19 +1,22 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-classic-captcha',
-  templateUrl: './classic-captcha.component.html',
-  styleUrls: ['./classic-captcha.component.css'],
+  imports: [CommonModule, FormsModule],
+  templateUrl: './classic-captcha.component.html'
 })
 export class ClassicCaptchaComponent {
+
   instruction = 'Klik op de afbeelding met een kat';
 
   // Replace these with your own images later
   images = [
-    { src: '/assets/dog.jpg', label: 'dog' },
-    { src: '/assets/cat.jpg', label: 'cat' },
-    { src: '/assets/bird.jpg', label: 'bird' },
+    { src: '/assets/dog.jpeg', label: 'dog' },
+    { src: '/assets/cat.jpeg', label: 'cat' },
+    { src: '/assets/bird.jpeg', label: 'bird' },
   ];
 
   shuffled = [...this.images];

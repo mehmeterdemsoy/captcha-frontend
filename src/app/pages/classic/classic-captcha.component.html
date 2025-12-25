@@ -6,6 +6,8 @@
   <img
     *ngFor="let img of shuffled"
     [src]="img.src"
+    maxlength="15px"
+    maxWith="15px"
     (click)="select(img)"
     class="thumb"
   />
