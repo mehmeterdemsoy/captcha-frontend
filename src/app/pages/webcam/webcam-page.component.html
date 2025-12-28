@@ -1,8 +1,16 @@
 <h2>Webcam CAPTCHA</h2>
 
-<button (click)="startCamera()" [disabled]="streaming">Start camera</button>
-<button (click)="stopCamera()" [disabled]="!streaming">Stop camera</button>
-<button (click)="capture()" [disabled]="!streaming">Verify</button>
+<button (click)="startCamera()" [disabled]="streaming">
+  Start camera
+</button>
+
+<button (click)="stopCamera()" [disabled]="!streaming">
+  Stop camera
+</button>
+
+<button (click)="captureAndVerify()" [disabled]="!streaming || loading">
+  Verify
+</button>
 
 <br /><br />
 
@@ -11,3 +19,24 @@
 <canvas #canvas style="display: none;"></canvas>
 
 <p>{{ status }}</p>
+
+<!-- ⏳ Loading -->
+<p *ngIf="loading">
+  ⏳ Verifying…
+</p>
+
+<!-- ✅ Resultaat -->
+<div *ngIf="result">
+  <p *ngIf="result.human_detected">
+    ✅ <strong>Human verified</strong><br />
+    Confidence: {{ result.confidence }}<br />
+    Processing time: {{ result.processing_ms }} ms
+  </p>
+
+  <p *ngIf="!result.human_detected">
+    ❌ <strong>Verification failed</strong><br />
+    <span *ngIf="result.spoof_flagged">
+      Spoof detected
+    </span>
+  </p>
+</div>

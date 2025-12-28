@@ -1,8 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CaptchaService } from '../../services/captcha.service';
+import {CaptchaService, VerifyResult} from '../../services/captcha.service';
+import {CommonModule} from '@angular/common';
 
 @Component({
   standalone: true,
+  imports: [CommonModule],
   selector: 'app-webcam-page',
   templateUrl: './webcam-page.component.html',
   styleUrls: ['./webcam-page.component.css'],
@@ -29,30 +31,39 @@ export class WebcamPageComponent {
     this.streaming = false;
   }
 
-  capture() {
-    const video = this.videoRef.nativeElement;
-    const canvas = this.canvasRef.nativeElement;
 
+  result?: VerifyResult;
+  loading = false;
+
+  captureAndVerify(): void {
+    const video = this.videoRef.nativeElement as HTMLVideoElement;
+
+    const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
     const ctx = canvas.getContext('2d')!;
     ctx.drawImage(video, 0, 0);
 
-    canvas.toBlob((blob) => {
+    canvas.toBlob((blob: Blob | null) => {
       if (!blob) return;
 
-      this.status = 'Verifying...';
+      const formData = new FormData();
+      formData.append('image', blob, 'capture.jpg');
 
-      this.captchaService.sendImage(blob).subscribe({
-        next: (res) =>
-          (this.status =
-            'Human detected: ' +
-            res.human_detected +
-            ' | confidence=' +
-            res.confidence),
-        error: () => (this.status = 'Request failed'),
-      });
-    });
+      this.loading = true;
+
+      this.captchaService.verifyImage(formData)
+        .subscribe({
+          next: (res: VerifyResult) => {
+            this.result = res;
+            this.loading = false;
+          },
+          error: (err: any) => {
+            console.error('Verification failed', err);
+            this.loading = false;
+          }
+        });
+    }, 'image/jpeg');
   }
 }
